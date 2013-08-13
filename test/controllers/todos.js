@@ -1,6 +1,6 @@
 var controller_helper = require('./controller_helper');
-var client = controller_helper.client;
-var Todo = require('../../lib/models/todo');
+var client            = controller_helper.client;
+var Todo              = require('../../lib/models/todo');
 var todo;
 
 // Factories

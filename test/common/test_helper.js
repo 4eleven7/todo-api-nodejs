@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var server = require('../../lib/server');
+var server   = require('../../lib/server');
 
 function startServer(next) {
   server.start(next);
@@ -23,9 +23,7 @@ function clearDb(callback) {
 };
 
 function tearDown(callback) {
-  // mongoose.disconnect(function() {
-    callback();
-  // });
+  callback();
 };
 
 module.exports.startServer = startServer;
