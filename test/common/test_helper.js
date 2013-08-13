@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var async = require('async');
 var server = require('../../lib/server');
 
 function startServer(next) {
