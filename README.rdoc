@@ -1,0 +1,33 @@
+# Todolist Application
+
+Example NodeJS Todo API appplication
+
+## Setup development
+
+1. Clone the repo and install dependencies `npm install`
+
+1. Start application `npm start`
+
+1. Visit the application `http://localhost:8080/`
+
+## Adding new features
+
+While developing new features, please create and run test `mocha -w`
+
+## API routes
+
+	curl \
+	  -X POST \
+	  -H 'Content-Type: application/json' \
+	  -d '{"title":"My first curl todo", "body":"How niceeeee"}' \
+	  http://0.0.0.0:8080/todos
+
+	curl \
+	  -X PUT \
+	  -H 'Content-Type: application/json' \
+	  -d '{"title":"Curl todo updated", "body":"w00t!"}' \
+	  http://0.0.0.0:8080/todos/5ec4117f-ba51-48ef-a108-b2d3a278ac17
+
+	curl \
+	  -X DELETE \
+	  http://0.0.0.0:8080/todos/5ec4117f-ba51-48ef-a108-b2d3a278ac17
