@@ -33,20 +33,19 @@ describe('Todos', function() {
         expect(res.statusCode).to.eql(200);
         expect(res.headers['content-type']).to.eql('application/json');
         // Data attributes
-        expect(data).to.have.property('todos');
-        expect(data.todos.length).to.eql(1);
-        expect(data.todos[0]).not.to.have.property('__v');
-        expect(data.todos[0]).not.to.have.property('_id');
-        expect(data.todos[0]).to.have.property('uuid').that.is.a.string;
-        expect(data.todos[0]).to.have.property('title').that.is.a.string;
-        expect(data.todos[0]).to.have.property('body').that.is.a.string;
-        expect(data.todos[0]).to.have.property('created_at').that.is.a.date;
-        expect(data.todos[0]).to.have.property('updated_at').that.is.a.date;
-        expect(data.todos[0]).to.have.property('completed_at').that.is.a.date;
+        expect(data.length).to.eql(1);
+        expect(data[0]).not.to.have.property('__v');
+        expect(data[0]).not.to.have.property('_id');
+        expect(data[0]).to.have.property('uuid').that.is.a.string;
+        expect(data[0]).to.have.property('title').that.is.a.string;
+        expect(data[0]).to.have.property('body').that.is.a.string;
+        expect(data[0]).to.have.property('created_at').that.is.a.date;
+        expect(data[0]).to.have.property('updated_at').that.is.a.date;
+        expect(data[0]).to.have.property('completed_at').that.is.a.date;
         // Data content
-        expect(data.todos[0].uuid).to.eql(todo.uuid);
-        expect(data.todos[0].title).to.eql(todo.title);
-        expect(data.todos[0].body).to.eql(todo.body);
+        expect(data[0].uuid).to.eql(todo.uuid);
+        expect(data[0].title).to.eql(todo.title);
+        expect(data[0].body).to.eql(todo.body);
         done();
       });
     });
@@ -87,7 +86,7 @@ describe('Todos', function() {
   describe('POST /todos', function() {
     beforeEach(function(done) {
       client.get('/todos', function(err, req, res, data) {
-        expect(data.todos.length).to.eql(0);
+        expect(data.length).to.eql(0);
         done();
       });
     });
@@ -104,9 +103,9 @@ describe('Todos', function() {
         },
         function (done) {
           client.get('/todos', function(err, req, res, data) {
-            expect(data.todos.length).to.eql(1);
-            expect(data.todos[0].title).to.eql('Mocha todo');
-            expect(data.todos[0].body).to.eql('Very nice');
+            expect(data.length).to.eql(1);
+            expect(data[0].title).to.eql('Mocha todo');
+            expect(data[0].body).to.eql('Very nice');
             done();
           });
         }
@@ -139,7 +138,7 @@ describe('Todos', function() {
         },
         function (done) {
           client.get('/todos', function(err, req, res, data) {
-            expect(data.todos.length).to.eql(0);
+            expect(data.length).to.eql(0);
             done();
           });
         }
@@ -222,7 +221,7 @@ describe('Todos', function() {
       Todo.create(todo_factory, function(err, t) {
         todo = t;
         client.get('/todos', function(err, req, res, data) {
-          expect(data.todos.length).to.eql(1);
+          expect(data.length).to.eql(1);
           done();
         });
       });
@@ -240,7 +239,7 @@ describe('Todos', function() {
         },
         function (done) {
           client.get('/todos', function(err, req, res, data) {
-            expect(data.todos.length).to.eql(0);
+            expect(data.length).to.eql(0);
             done();
           });
         }
@@ -262,7 +261,7 @@ describe('Todos', function() {
         },
         function (done) {
           client.get('/todos', function(err, req, res, data) {
-            expect(data.todos.length).to.eql(1);
+            expect(data.length).to.eql(1);
             done();
           });
         }
