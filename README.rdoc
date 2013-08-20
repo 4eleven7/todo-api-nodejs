@@ -39,6 +39,13 @@ Update todo item
          -H 'Content-Type: application/json' \
          -d '{"title":"Curl todo updated", "body":"w00t!"}' \
          http://0.0.0.0:8080/todos/5ec4117f-ba51-48ef-a108-b2d3a278ac17
+         
+Complete/Un-complete a todo item
+       curl \
+         -X PUT \
+         -H 'Content-Type: application/json' \
+         -d '{"completed":"true/false"}' \
+         http://0.0.0.0:8080/todos/5ec4117f-ba51-48ef-a108-b2d3a278ac17/completed
 
 Delete a todo item
        curl -X DELETE http://0.0.0.0:8080/todos/5ec4117f-ba51-48ef-a108-b2d3a278ac17
