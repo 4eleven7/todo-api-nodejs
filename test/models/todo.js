@@ -30,6 +30,11 @@ describe('Todo', function() {
         done();
       });
 
+      it("should not be completed on create", function(done) {
+        expect(todo).to.have.property('completed');
+        expect(todo.completed).to.eql(false);
+        done();
+      });
   
       it("should have valid creation and update timestamp", function(done) {
         expect(todo).to.have.property('created_at');

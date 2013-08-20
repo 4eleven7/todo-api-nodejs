@@ -41,7 +41,7 @@ describe('Todos', function() {
         expect(data[0]).to.have.property('body').that.is.a.string;
         expect(data[0]).to.have.property('created_at').that.is.a.date;
         expect(data[0]).to.have.property('updated_at').that.is.a.date;
-        expect(data[0]).to.have.property('completed_at').that.is.a.date;
+        expect(data[0]).to.have.property('completed').that.is.a.boolean;
         // Data content
         expect(data[0].uuid).to.eql(todo.uuid);
         expect(data[0].title).to.eql(todo.title);
@@ -73,7 +73,7 @@ describe('Todos', function() {
         expect(data).to.have.property('body').that.is.a.string;
         expect(data).to.have.property('created_at').that.is.a.date;
         expect(data).to.have.property('created_at').that.is.a.date;
-        expect(data).to.have.property('completed_at').that.is.a.date;
+        expect(data).to.have.property('completed').that.is.a.boolean;
         // Data content
         expect(data.uuid).to.eql(todo.uuid);
         expect(data.title).to.eql(todo.title);
@@ -98,6 +98,9 @@ describe('Todos', function() {
             expect(res).to.exist;
             expect(res.statusCode).to.eql(200);
             expect(data.message).to.eql('created');
+            expect(data.todo.uuid).not.to.eql(null);
+            expect(data.todo.title).to.eql('Mocha todo');
+            expect(data.todo.body).to.eql('Very nice');
             done();
           });
         },
@@ -209,6 +212,111 @@ describe('Todos', function() {
             expect(data.uuid).to.eql(todo.uuid);
             expect(data.title).to.eql(todo.title);
             expect(data.body).to.eql(todo.body);
+            done();
+          });
+        }
+      ], done);
+    });
+  });
+
+  describe('PUT /todos/:todo/completed', function() {
+    beforeEach(function(done) {
+      Todo.create(todo_factory, function(err, t) {
+        todo = t;
+        client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+          expect(data.uuid).to.eql(todo.uuid);
+          expect(data.completed).to.eql(false);
+          done();
+        });
+      });
+    });
+
+    it("completes the todo item", function(done) {
+      async.series([
+        function (done) {
+          client.put('/todos/' + todo.uuid + '/completed', { completed: true }, function(err, req, res, data) {
+            expect(res).to.exist;
+            expect(res.statusCode).to.eql(200);
+            expect(data.message).to.eql('completed');
+            done();
+          });
+        },
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(true);
+            done();
+          });
+        }
+      ], done);
+    });
+
+    it("uncompletes the todo item", function(done) {
+      async.series([
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(false);
+            done();
+          });
+        },
+        function (done) {
+          client.put('/todos/' + todo.uuid + '/completed', { completed: true }, function(err, req, res, data) {
+            expect(res).to.exist;
+            expect(res.statusCode).to.eql(200);
+            expect(data.message).to.eql('completed');
+            done();
+          });
+        },
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(true);
+            done();
+          });
+        },
+        function (done) {
+          client.put('/todos/' + todo.uuid + '/completed', { completed: false }, function(err, req, res, data) {
+            expect(res).to.exist;
+            expect(res.statusCode).to.eql(200);
+            expect(data.message).to.eql('uncompleted');
+            done();
+          });
+        },
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(false);
+            done();
+          });
+        }
+      ], done);
+    });
+
+    it("returns a invalid argument error", function(done) {
+      async.series([
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(false);
+            done();
+          });
+        },
+        function (done) {
+          client.put('/todos/' + todo.uuid + '/completed', function(err, req, res, data) {
+            expect(res).to.exist;
+            expect(res.statusCode).to.eql(409);
+            expect(data).to.have.property('code').that.is.a.string;
+            expect(data.code).to.eql('InvalidArgument');
+            expect(data).to.have.property('message').that.is.a.string;
+            expect(data.message).to.eql('completed attribute is not present or empty');
+            done();
+          });
+        },
+        function (done) {
+          client.get('/todos/' + todo.uuid, function(err, req, res, data) {
+            expect(data.uuid).to.eql(todo.uuid);
+            expect(data.completed).to.eql(false);
             done();
           });
         }
