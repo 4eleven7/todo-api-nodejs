@@ -12,6 +12,7 @@
     "restify": "~2.6.0",
     "mongoose": "~3.6.15",
     "node-uuid": "~1.4.0",
+    "socket.io": "~0.9.16",
     "moment": "~2.1.0",
     "bunyan": "~0.21.4"
   },
